@@ -70,6 +70,3 @@ def main():
     predicted_rating = predict_rating(model=model, features=features)
 
     print(predicted_rating[0])
-
-
-main()
