@@ -4,8 +4,8 @@ import pandas as pd  # data manipulation & analysis
 from sklearn.metrics.pairwise import cosine_similarity
 
 # Import movie and ratings dataset
-movies = pd.read_csv('/ml-latest-small/movies.csv')
-ratings = pd.read_csv('/ml-latest-small/ratings.csv')
+movies = pd.read_csv('./ml-latest-small/movies.csv')
+ratings = pd.read_csv('./ml-latest-small/ratings.csv')
 
 # Merge movies and ratings dataset
 movies_data = pd.merge(movies, ratings, on='movieId')
