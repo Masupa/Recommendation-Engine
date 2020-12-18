@@ -4,8 +4,8 @@ import pandas as pd  # data manipulation & analysis
 from sklearn.metrics.pairwise import cosine_similarity
 
 # Import movie and ratings dataset
-movies = pd.read_csv('./ml-latest-small/movies.csv')
-ratings = pd.read_csv('./ml-latest-small/ratings.csv')
+movies = pd.read_csv('../ml-latest-small/movies.csv')
+ratings = pd.read_csv('../ml-latest-small/ratings.csv')
 
 # Merge movies and ratings dataset
 movies_data = pd.merge(movies, ratings, on='movieId')
@@ -18,7 +18,11 @@ def get_similar_movies(movie_title, rating):
     :param rating: Rating given to movie
     """
     
-    similar_score = cosine_sim_data[movie_title] * (rating - 2.5)
+    try:
+        similar_score = cosine_sim_data[movie_title] * (rating - 2.5)
+    except:
+        return "Movie not in dataset!" 
+
     return similar_score.sort_values(ascending=False)
 
 # With a collaborate-based filtering recommendation, we are interested in the movie

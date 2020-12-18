@@ -31,7 +31,16 @@ def main_interface(engine_kind):
         model, movie_data = re.load()
 
         # Movie ID
-        movie_id = movie_data[movie_data['title'] == movie_title]['movieId'].values[0]
+        try:
+            movie_id = movie_data[movie_data['title'] == movie_title]['movieId'].values[0]
+        except:
+
+            st.write("")
+            st.write("Input not a movie or not in dataset!")
+            st.write("")
+
+            return
+
 
         # Features
         features = re.get_features(dataset=movie_data, movie_id=movie_id, user_id=user_id)
@@ -45,29 +54,63 @@ def main_interface(engine_kind):
         if engine_kind == 'Content-Based':
             # Gettting Movies
             movies = content_based.get_recommendation(movie_title=movie_title)
-        elif engine_kind == 'Collaborative-Based':
-            # Gettting Movies
-            movies = collaborative_based.get_similar_movies(movie_title, rating=5).iloc[:10].index
 
-        # Rating
-        st.text("")
-        st.text("Recommended Movies")
-        st.write("Movie 1:      {}".format(movies[0]))
-        st.write("Movie 2:      {}".format(movies[1]))
-        st.write("Movie 3:      {}".format(movies[2]))
-        st.write("Movie 4:      {}".format(movies[3]))
-        st.write("Movie 5:      {}".format(movies[4]))
-        st.text("")
+            print(movies)
+
+            if movies == "Movie not in dataset!":
+                st.write("")
+                st.write("Movie not in dataset! Try a different one!")
+                st.write("")
+            else:
+                # Rating
+                st.text("")
+                st.text("Recommended Movies")
+                st.write("Current Movie:      {}".format(movies[0]))
+                st.write("")
+                st.write("Movie 1:      {}".format(movies[1]))
+                st.write("Movie 2:      {}".format(movies[2]))
+                st.write("Movie 3:      {}".format(movies[3]))
+                st.write("Movie 4:      {}".format(movies[4]))
+                st.write("Movie 5:      {}".format(movies[5]))
+                st.text("")
+
+        elif engine_kind == 'Collaborative-Based':
+            
+            try:
+                # Gettting Movies
+                movies = collaborative_based.get_similar_movies(movie_title, rating=5).iloc[:10].index
+
+                # Rating
+                st.text("")
+                st.text("Recommended Movies")
+                st.write("Current Movie:      {}".format(movies[0]))
+                st.write("")
+                st.write("Movie 1:      {}".format(movies[1]))
+                st.write("Movie 2:      {}".format(movies[2]))
+                st.write("Movie 3:      {}".format(movies[3]))
+                st.write("Movie 4:      {}".format(movies[4]))
+                st.write("Movie 5:      {}".format(movies[5]))
+                st.text("")
+
+            except:
+                st.write("")
+                st.write("Movie not in dataset! Try a different one!")
+                st.write("")
 
     if button and engine_kind == 'Predict Rating':
 
         # Prediction
-        predicted_rating = re.predict_rating(model=model, features=features)[0]
+        try:
+            predicted_rating = re.predict_rating(model=model, features=features)[0]
 
-        st.text("")
-        st.write("Predicted Rating")
-        st.write("Rating: {}".format(predicted_rating))
-        st.text("")
+            st.text("")
+            st.write("Predicted Rating")
+            st.write("Rating: {}".format(predicted_rating))
+            st.text("")
+        except:
+            st.write("")
+            st.write("Error handling between movie and userId")
+            st.write("")
 
 
 def sidebar(): 

@@ -23,8 +23,13 @@ def get_index_from_title(title):
     :param title: Title of movie liked by user
     :return: index of title in DataFrame
     """
-    return movie_data[movie_data.title == title]['index'].values[0]
 
+    try:
+        title = movie_data[movie_data.title == title]['index'].values[0]
+    except:
+        return "Movie not in dataset!"
+
+    return title
 
 def get_title_from_index(index):
     """
@@ -38,6 +43,9 @@ def get_title_from_index(index):
 def get_recommendation(movie_title):
     # Movie ID
     movie_index = get_index_from_title(movie_title)
+
+    if movie_index == "Movie not in dataset!":
+        return "Movie not in dataset!"
 
     # List of turples of index and cosine similarity score of movies
     similar_movies = sorted(list(enumerate(cosine_sim[movie_index])), key=lambda x:x[1], reverse=True)
